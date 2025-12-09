@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حفظ سورة يس</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a3a4a;
+            --primary-light: #2d5a6e;
+            --gold: #d4af37;
+            --gold-light: #f4e4ba;
+            --bg: #f8f5f0;
+            --text: #2c3e50;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --success: #4caf50;
+            --error: #f44336;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        body.dark-mode {
+            --bg: #0d1f2d;
+            --text: #e8e4df;
+            --card-bg: rgba(30, 50, 70, 0.95);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-family: 'Amiri', serif;
+            font-size: 3rem;
+            color: var(--gold);
+        }
+
+        .header .subtitle {
+            color: var(--gold-light);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        .bismillah {
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-top: 1rem;
+        }
+
+        .controls-bar {
+            background: var(--card-bg);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .progress-container { flex: 1; min-width: 200px; }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), #f4d35e);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold), #e8c547);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-icon {
+            width: 45px;
+            height: 45px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 1.3rem;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.2rem;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .stat-icon { font-size: 2rem; }
+        .stat-value { font-size: 1.8rem; font-weight: 700; color: var(--gold); }
+        .stat-label { font-size: 0.85rem; color: #666; }
+
+        .tabs-container {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .tab {
+            padding: 0.8rem 1.2rem;
+            background: var(--card-bg);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 130px;
+        }
+
+        .tab:hover, .tab.active {
+            border-color: var(--gold);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .tab.completed { background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05)); }
+
+        .tab-title { font-weight: 700; color: var(--primary); }
+        body.dark-mode .tab-title { color: var(--gold); }
+        .tab-info { font-size: 0.8rem; color: #666; margin-top: 0.2rem; }
+        .tab-status { font-size: 1.3rem; margin-top: 0.3rem; }
+
+        .content-area {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .stage-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--gold-light);
+        }
+
+        .stage-header h2 {
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        body.dark-mode .stage-header h2 { color: var(--gold); }
+
+        /* Audio Player */
+        .audio-player {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 15px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .audio-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: none;
+            background: var(--gold);
+            color: var(--primary);
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .audio-btn:hover { transform: scale(1.1); }
+        .audio-btn.playing { animation: pulse 1s infinite; }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .audio-info { flex: 1; color: white; min-width: 200px; }
+        .audio-info .reciter { font-size: 0.85rem; opacity: 0.8; }
+        .audio-info .verse-playing { font-family: 'Amiri', serif; font-size: 1.1rem; margin-top: 0.3rem; }
+
+        .audio-controls { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+        .audio-controls button {
+            padding: 0.5rem 0.8rem;
+            border: 2px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .audio-controls button:hover {
+            background: var(--gold);
+            color: var(--primary);
+        }
+
+        /* Tools Panel */
+        .tools-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 12px;
+        }
+
+        .tool-btn {
+            padding: 0.8rem 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .tool-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .tool-btn.active {
+            background: var(--gold);
+            color: var(--primary);
+        }
+
+        /* Verses */
+        .verses-container {
+            line-height: 2.8;
+            padding: 1rem 0;
+        }
+
+        .verse {
+            display: inline;
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0.2rem 0.4rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .verse:hover { background: rgba(212, 175, 55, 0.2); }
+
+        .verse.memorized {
+            color: var(--gold);
+            text-decoration: underline;
+            text-decoration-color: var(--gold);
+            text-underline-offset: 5px;
+        }
+
+        .word { display: inline; transition: all 0.3s ease; }
+
+        .word.hidden-word {
+            color: transparent !important;
+            background: #ccc;
+            border-radius: 4px;
+            user-select: none;
+        }
+
+        .verse-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--gold);
+            color: var(--primary);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 50%;
+            margin: 0 0.3rem;
+            vertical-align: middle;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 2px solid var(--gold);
+        }
+
+        .quiz-title {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .quiz-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .quiz-tab {
+            padding: 0.8rem 1.2rem;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .quiz-tab {
+            background: var(--primary);
+            border-color: var(--primary-light);
+            color: white;
+        }
+
+        .quiz-tab:hover, .quiz-tab.active {
+            border-color: var(--gold);
+            background: var(--gold);
+            color: var(--primary);
+        }
+
+        .quiz-content { display: none; }
+        .quiz-content.active { display: block; }
+
+        .quiz-question {
+            font-family: 'Amiri', serif;
+            font-size: 1.4rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+        }
+
+        body.dark-mode .quiz-question {
+            background: var(--primary);
+        }
+
+        .quiz-verse-display {
+            color: var(--gold);
+            font-size: 1.3rem;
+            margin-top: 0.5rem;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Amiri', serif;
+            font-size: 1.2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .quiz-option {
+            background: var(--primary);
+            border-color: var(--primary-light);
+        }
+
+        .quiz-option:hover {
+            border-color: var(--gold);
+            transform: scale(1.01);
+        }
+
+        .quiz-option.correct {
+            background: var(--success) !important;
+            color: white !important;
+            border-color: var(--success) !important;
+        }
+
+        .quiz-option.wrong {
+            background: var(--error) !important;
+            color: white !important;
+            border-color: var(--error) !important;
+        }
+
+        .quiz-option.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        /* Word Arrange */
+        .arrange-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .answer-zone {
+            min-height: 80px;
+            padding: 1rem;
+            background: rgba(212, 175, 55, 0.2);
+            border: 3px dashed var(--gold);
+            border-radius: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .word-bank {
+            padding: 1rem;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        body.dark-mode .word-bank {
+            background: var(--primary);
+        }
+
+        .word-chip {
+            padding: 0.6rem 1rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Amiri', serif;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .word-chip:hover { transform: scale(1.05); }
+
+        .word-chip.selected {
+            background: var(--gold);
+            color: var(--primary);
+        }
+
+        .word-chip.in-answer {
+            background: var(--gold);
+            color: var(--primary);
+        }
+
+        /* Fill Blank */
+        .fill-blank-display {
+            font-family: 'Amiri', serif;
+            font-size: 1.6rem;
+            text-align: center;
+            line-height: 2;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .fill-blank-display {
+            background: var(--primary);
+        }
+
+        .blank-word {
+            display: inline-block;
+            min-width: 80px;
+            padding: 0 10px;
+            border-bottom: 3px solid var(--gold);
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        /* Result Message */
+        .result-msg {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .result-msg.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: var(--success);
+        }
+
+        .result-msg.error {
+            background: rgba(244, 67, 54, 0.2);
+            color: var(--error);
+        }
+
+        .quiz-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+        }
+
+        .modal-icon { font-size: 4rem; }
+        .modal h2 { font-family: 'Amiri', serif; font-size: 1.8rem; color: var(--gold); margin: 1rem 0; }
+        .modal p { color: #666; margin-bottom: 1.5rem; }
+        .stars { font-size: 2.5rem; margin: 0.5rem 0; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2rem; }
+            .controls-bar { flex-direction: column; }
+            .verse { font-size: 1.5rem; }
+            .main-container { padding: 1rem; }
+            .audio-player { flex-direction: column; text-align: center; }
+            .quiz-options { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>سورة يس</h1>
+        <p class="subtitle">قلب القرآن الكريم - 83 آية</p>
+        <p class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+    </header>
+
+    <div class="controls-bar">
+        <div class="progress-container">
+            <div class="progress-label">
+                <span>التقدم الكلي</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-icon btn-secondary" onclick="toggleDarkMode()" title="الوضع الليلي">🌙</button>
+            <button class="btn btn-icon btn-secondary" onclick="resetProgress()" title="إعادة البدء">🔄</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon">📖</div>
+                <div class="stat-value" id="totalVerses">0</div>
+                <div class="stat-label">آية محفوظة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-value" id="completedStages">0</div>
+                <div class="stat-label">مرحلة مكتملة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-value" id="totalStars">0</div>
+                <div class="stat-label">نجمة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-value" id="quizScore">0%</div>
+                <div class="stat-label">نجاح الاختبارات</div>
+            </div>
+        </div>
+
+        <div class="tabs-container" id="tabsContainer"></div>
+
+        <div class="content-area">
+            <div class="stage-header">
+                <h2 id="stageTitle">المرحلة الأولى</h2>
+                <p id="stageInfo" style="color: #666; margin-top: 0.3rem;"></p>
+            </div>
+
+            <!-- مشغل الصوت -->
+            <div class="audio-player">
+                <button class="audio-btn" id="playBtn" onclick="toggleAudio()">▶️</button>
+                <div class="audio-info">
+                    <div class="reciter">🎙️ القارئ: ياسر الدوسري</div>
+                    <div class="verse-playing" id="currentVersePlaying">اضغط ▶️ للاستماع للآية</div>
+                </div>
+                <div class="audio-controls">
+                    <button onclick="prevVerseAudio()">⏮️ السابقة</button>
+                    <button onclick="nextVerseAudio()">التالية ⏭️</button>
+                    <button onclick="repeatVerse()">🔁 تكرار</button>
+                </div>
+            </div>
+
+            <!-- أدوات الحفظ -->
+            <div class="tools-panel">
+                <button class="tool-btn" onclick="hideRandomWords()">🎲 إخفاء كلمات عشوائية</button>
+                <button class="tool-btn" onclick="hideLastWords()">📝 إخفاء الكلمات الأخيرة</button>
+                <button class="tool-btn" onclick="hideFullVerse()">🙈 إخفاء آية كاملة</button>
+                <button class="tool-btn" onclick="showAllWords()">👀 إظهار الكل</button>
+                <button class="tool-btn" onclick="markAllMemorized()">✅ حفظت الكل</button>
+                <button class="tool-btn" id="quizToggleBtn" onclick="toggleQuizSection()">📝 اختبر نفسك</button>
+            </div>
+
+            <div class="verses-container" id="versesContainer"></div>
+
+            <!-- قسم الاختبارات -->
+            <div class="quiz-section" id="quizSection" style="display: none;">
+                <div class="quiz-title">🎯 اختبر حفظك</div>
+                
+                <div class="quiz-tabs">
+                    <button class="quiz-tab active" id="tabComplete" onclick="switchQuiz('complete')">أكمل الآية</button>
+                    <button class="quiz-tab" id="tabArrange" onclick="switchQuiz('arrange')">رتب الكلمات</button>
+                    <button class="quiz-tab" id="tabFill" onclick="switchQuiz('fill')">الكلمة الناقصة</button>
+                </div>
+
+                <!-- اختبار أكمل الآية -->
+                <div class="quiz-content active" id="quizComplete">
+                    <div class="quiz-question">
+                        <div>ما الآية التي تأتي بعد:</div>
+                        <div class="quiz-verse-display" id="completeQuestion"></div>
+                    </div>
+                    <div class="quiz-options" id="completeOptions"></div>
+                    <div id="completeResult"></div>
+                    <div class="quiz-nav">
+                        <button class="btn btn-primary" onclick="nextCompleteQ()">السؤال التالي ➡️</button>
+                    </div>
+                </div>
+
+                <!-- اختبار ترتيب الكلمات -->
+                <div class="quiz-content" id="quizArrange">
+                    <div class="quiz-question">
+                        <div>رتب الكلمات التالية لتكوين الآية الصحيحة:</div>
+                    </div>
+                    <div class="arrange-container">
+                        <div class="answer-zone" id="answerZone">
+                            <span style="color: #999;">اضغط على الكلمات بالترتيب الصحيح</span>
+                        </div>
+                        <div class="word-bank" id="wordBank"></div>
+                    </div>
+                    <div id="arrangeResult"></div>
+                    <div class="quiz-nav">
+                        <button class="btn btn-secondary" onclick="checkArrange()">تحقق ✓</button>
+                        <button class="btn btn-primary" onclick="nextArrangeQ()">سؤال جديد ➡️</button>
+                    </div>
+                </div>
+
+                <!-- اختبار الكلمة الناقصة -->
+                <div class="quiz-content" id="quizFill">
+                    <div class="quiz-question">
+                        <div>اختر الكلمة الناقصة:</div>
+                    </div>
+                    <div class="fill-blank-display" id="fillDisplay"></div>
+                    <div class="quiz-options" id="fillOptions"></div>
+                    <div id="fillResult"></div>
+                    <div class="quiz-nav">
+                        <button class="btn btn-primary" onclick="nextFillQ()">السؤال التالي ➡️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-icon">🎉</div>
+            <h2>مبارك!</h2>
+            <div class="stars">⭐⭐⭐</div>
+            <p id="modalMessage">لقد أتممت حفظ هذه المرحلة!</p>
+            <button class="btn btn-primary" onclick="closeModal()">متابعة ➡️</button>
+        </div>
+    </div>
+
+    <audio id="audioPlayer"></audio>
+
+    <script>
+        // بيانات سورة يس
+        const surahData = {
+            stages: [
+                {
+                    id: 1, title: "المرحلة الأولى", info: "الآيات 1-12 | مقدمة السورة",
+                    verses: [
+                        { num: 1, text: "يس" },
+                        { num: 2, text: "وَالْقُرْآنِ الْحَكِيمِ" },
+                        { num: 3, text: "إِنَّكَ لَمِنَ الْمُرْسَلِينَ" },
+                        { num: 4, text: "عَلَىٰ صِرَاطٍ مُّسْتَقِيمٍ" },
+                        { num: 5, text: "تَنزِيلَ الْعَزِيزِ الرَّحِيمِ" },
+                        { num: 6, text: "لِتُنذِرَ قَوْمًا مَّا أُنذِرَ آبَاؤُهُمْ فَهُمْ غَافِلُونَ" },
+                        { num: 7, text: "لَقَدْ حَقَّ الْقَوْلُ عَلَىٰ أَكْثَرِهِمْ فَهُمْ لَا يُؤْمِنُونَ" },
+                        { num: 8, text: "إِنَّا جَعَلْنَا فِي أَعْنَاقِهِمْ أَغْلَالًا فَهِيَ إِلَى الْأَذْقَانِ فَهُم مُّقْمَحُونَ" },
+                        { num: 9, text: "وَجَعَلْنَا مِن بَيْنِ أَيْدِيهِمْ سَدًّا وَمِنْ خَلْفِهِمْ سَدًّا فَأَغْشَيْنَاهُمْ فَهُمْ لَا يُبْصِرُونَ" },
+                        { num: 10, text: "وَسَوَاءٌ عَلَيْهِمْ أَأَنذَرْتَهُمْ أَمْ لَمْ تُنذِرْهُمْ لَا يُؤْمِنُونَ" },
+                        { num: 11, text: "إِنَّمَا تُنذِرُ مَنِ اتَّبَعَ الذِّكْرَ وَخَشِيَ الرَّحْمَٰنَ بِالْغَيْبِ فَبَشِّرْهُ بِمَغْفِرَةٍ وَأَجْرٍ كَرِيمٍ" },
+                        { num: 12, text: "إِنَّا نَحْنُ نُحْيِي الْمَوْتَىٰ وَنَكْتُبُ مَا قَدَّمُوا وَآثَارَهُمْ وَكُلَّ شَيْءٍ أَحْصَيْنَاهُ فِي إِمَامٍ مُّبِينٍ" }
+                    ]
+                },
+                {
+                    id: 2, title: "المرحلة الثانية", info: "الآيات 13-27 | قصة أصحاب القرية",
+                    verses: [
+                        { num: 13, text: "وَاضْرِبْ لَهُم مَّثَلًا أَصْحَابَ الْقَرْيَةِ إِذْ جَاءَهَا الْمُرْسَلُونَ" },
+                        { num: 14, text: "إِذْ أَرْسَلْنَا إِلَيْهِمُ اثْنَيْنِ فَكَذَّبُوهُمَا فَعَزَّزْنَا بِثَالِثٍ فَقَالُوا إِنَّا إِلَيْكُم مُّرْسَلُونَ" },
+                        { num: 15, text: "قَالُوا مَا أَنتُمْ إِلَّا بَشَرٌ مِّثْلُنَا وَمَا أَنزَلَ الرَّحْمَٰنُ مِن شَيْءٍ إِنْ أَنتُمْ إِلَّا تَكْذِبُونَ" },
+                        { num: 16, text: "قَالُوا رَبُّنَا يَعْلَمُ إِنَّا إِلَيْكُمْ لَمُرْسَلُونَ" },
+                        { num: 17, text: "وَمَا عَلَيْنَا إِلَّا الْبَلَاغُ الْمُبِينُ" },
+                        { num: 18, text: "قَالُوا إِنَّا تَطَيَّرْنَا بِكُمْ لَئِن لَّمْ تَنتَهُوا لَنَرْجُمَنَّكُمْ وَلَيَمَسَّنَّكُم مِّنَّا عَذَابٌ أَلِيمٌ" },
+                        { num: 19, text: "قَالُوا طَائِرُكُم مَّعَكُمْ أَئِن ذُكِّرْتُم بَلْ أَنتُمْ قَوْمٌ مُّسْرِفُونَ" },
+                        { num: 20, text: "وَجَاءَ مِنْ أَقْصَى الْمَدِينَةِ رَجُلٌ يَسْعَىٰ قَالَ يَا قَوْمِ اتَّبِعُوا الْمُرْسَلِينَ" },
+                        { num: 21, text: "اتَّبِعُوا مَن لَّا يَسْأَلُكُمْ أَجْرًا وَهُم مُّهْتَدُونَ" },
+                        { num: 22, text: "وَمَا لِيَ لَا أَعْبُدُ الَّذِي فَطَرَنِي وَإِلَيْهِ تُرْجَعُونَ" },
+                        { num: 23, text: "أَأَتَّخِذُ مِن دُونِهِ آلِهَةً إِن يُرِدْنِ الرَّحْمَٰنُ بِضُرٍّ لَّا تُغْنِ عَنِّي شَفَاعَتُهُمْ شَيْئًا وَلَا يُنقِذُونِ" },
+                        { num: 24, text: "إِنِّي إِذًا لَّفِي ضَلَالٍ مُّبِينٍ" },
+                        { num: 25, text: "إِنِّي آمَنتُ بِرَبِّكُمْ فَاسْمَعُونِ" },
+                        { num: 26, text: "قِيلَ ادْخُلِ الْجَنَّةَ قَالَ يَا لَيْتَ قَوْمِي يَعْلَمُونَ" },
+                        { num: 27, text: "بِمَا غَفَرَ لِي رَبِّي وَجَعَلَنِي مِنَ الْمُكْرَمِينَ" }
+                    ]
+                },
+                {
+                    id: 3, title: "المرحلة الثالثة", info: "الآيات 28-40 | آيات الله في الكون",
+                    verses: [
+                        { num: 28, text: "وَمَا أَنزَلْنَا عَلَىٰ قَوْمِهِ مِن بَعْدِهِ مِن جُندٍ مِّنَ السَّمَاءِ وَمَا كُنَّا مُنزِلِينَ" },
+                        { num: 29, text: "إِن كَانَتْ إِلَّا صَيْحَةً وَاحِدَةً فَإِذَا هُمْ خَامِدُونَ" },
+                        { num: 30, text: "يَا حَسْرَةً عَلَى الْعِبَادِ مَا يَأْتِيهِم مِّن رَّسُولٍ إِلَّا كَانُوا بِهِ يَسْتَهْزِئُونَ" },
+                        { num: 31, text: "أَلَمْ يَرَوْا كَمْ أَهْلَكْنَا قَبْلَهُم مِّنَ الْقُرُونِ أَنَّهُمْ إِلَيْهِمْ لَا يَرْجِعُونَ" },
+                        { num: 32, text: "وَإِن كُلٌّ لَّمَّا جَمِيعٌ لَّدَيْنَا مُحْضَرُونَ" },
+                        { num: 33, text: "وَآيَةٌ لَّهُمُ الْأَرْضُ الْمَيْتَةُ أَحْيَيْنَاهَا وَأَخْرَجْنَا مِنْهَا حَبًّا فَمِنْهُ يَأْكُلُونَ" },
+                        { num: 34, text: "وَجَعَلْنَا فِيهَا جَنَّاتٍ مِّن نَّخِيلٍ وَأَعْنَابٍ وَفَجَّرْنَا فِيهَا مِنَ الْعُيُونِ" },
+                        { num: 35, text: "لِيَأْكُلُوا مِن ثَمَرِهِ وَمَا عَمِلَتْهُ أَيْدِيهِمْ أَفَلَا يَشْكُرُونَ" },
+                        { num: 36, text: "سُبْحَانَ الَّذِي خَلَقَ الْأَزْوَاجَ كُلَّهَا مِمَّا تُنبِتُ الْأَرْضُ وَمِنْ أَنفُسِهِمْ وَمِمَّا لَا يَعْلَمُونَ" },
+                        { num: 37, text: "وَآيَةٌ لَّهُمُ اللَّيْلُ نَسْلَخُ مِنْهُ النَّهَارَ فَإِذَا هُم مُّظْلِمُونَ" },
+                        { num: 38, text: "وَالشَّمْسُ تَجْرِي لِمُسْتَقَرٍّ لَّهَا ذَٰلِكَ تَقْدِيرُ الْعَزِيزِ الْعَلِيمِ" },
+                        { num: 39, text: "وَالْقَمَرَ قَدَّرْنَاهُ مَنَازِلَ حَتَّىٰ عَادَ كَالْعُرْجُونِ الْقَدِيمِ" },
+                        { num: 40, text: "لَا الشَّمْسُ يَنبَغِي لَهَا أَن تُدْرِكَ الْقَمَرَ وَلَا اللَّيْلُ سَابِقُ النَّهَارِ وَكُلٌّ فِي فَلَكٍ يَسْبَحُونَ" }
+                    ]
+                },
+                {
+                    id: 4, title: "المرحلة الرابعة", info: "الآيات 41-54 | البعث والحساب",
+                    verses: [
+                        { num: 41, text: "وَآيَةٌ لَّهُمْ أَنَّا حَمَلْنَا ذُرِّيَّتَهُمْ فِي الْفُلْكِ الْمَشْحُونِ" },
+                        { num: 42, text: "وَخَلَقْنَا لَهُم مِّن مِّثْلِهِ مَا يَرْكَبُونَ" },
+                        { num: 43, text: "وَإِن نَّشَأْ نُغْرِقْهُمْ فَلَا صَرِيخَ لَهُمْ وَلَا هُمْ يُنقَذُونَ" },
+                        { num: 44, text: "إِلَّا رَحْمَةً مِّنَّا وَمَتَاعًا إِلَىٰ حِينٍ" },
+                        { num: 45, text: "وَإِذَا قِيلَ لَهُمُ اتَّقُوا مَا بَيْنَ أَيْدِيكُمْ وَمَا خَلْفَكُمْ لَعَلَّكُمْ تُرْحَمُونَ" },
+                        { num: 46, text: "وَمَا تَأْتِيهِم مِّنْ آيَةٍ مِّنْ آيَاتِ رَبِّهِمْ إِلَّا كَانُوا عَنْهَا مُعْرِضِينَ" },
+                        { num: 47, text: "وَإِذَا قِيلَ لَهُمْ أَنفِقُوا مِمَّا رَزَقَكُمُ اللَّهُ قَالَ الَّذِينَ كَفَرُوا لِلَّذِينَ آمَنُوا أَنُطْعِمُ مَن لَّوْ يَشَاءُ اللَّهُ أَطْعَمَهُ إِنْ أَنتُمْ إِلَّا فِي ضَلَالٍ مُّبِينٍ" },
+                        { num: 48, text: "وَيَقُولُونَ مَتَىٰ هَٰذَا الْوَعْدُ إِن كُنتُمْ صَادِقِينَ" },
+                        { num: 49, text: "مَا يَنظُرُونَ إِلَّا صَيْحَةً وَاحِدَةً تَأْخُذُهُمْ وَهُمْ يَخِصِّمُونَ" },
+                        { num: 50, text: "فَلَا يَسْتَطِيعُونَ تَوْصِيَةً وَلَا إِلَىٰ أَهْلِهِمْ يَرْجِعُونَ" },
+                        { num: 51, text: "وَنُفِخَ فِي الصُّورِ فَإِذَا هُم مِّنَ الْأَجْدَاثِ إِلَىٰ رَبِّهِمْ يَنسِلُونَ" },
+                        { num: 52, text: "قَالُوا يَا وَيْلَنَا مَن بَعَثَنَا مِن مَّرْقَدِنَا هَٰذَا مَا وَعَدَ الرَّحْمَٰنُ وَصَدَقَ الْمُرْسَلُونَ" },
+                        { num: 53, text: "إِن كَانَتْ إِلَّا صَيْحَةً وَاحِدَةً فَإِذَا هُمْ جَمِيعٌ لَّدَيْنَا مُحْضَرُونَ" },
+                        { num: 54, text: "فَالْيَوْمَ لَا تُظْلَمُ نَفْسٌ شَيْئًا وَلَا تُجْزَوْنَ إِلَّا مَا كُنتُمْ تَعْمَلُونَ" }
+                    ]
+                },
+                {
+                    id: 5, title: "المرحلة الخامسة", info: "الآيات 55-67 | الجنة والنار",
+                    verses: [
+                        { num: 55, text: "إِنَّ أَصْحَابَ الْجَنَّةِ الْيَوْمَ فِي شُغُلٍ فَاكِهُونَ" },
+                        { num: 56, text: "هُمْ وَأَزْوَاجُهُمْ فِي ظِلَالٍ عَلَى الْأَرَائِكِ مُتَّكِئُونَ" },
+                        { num: 57, text: "لَهُمْ فِيهَا فَاكِهَةٌ وَلَهُم مَّا يَدَّعُونَ" },
+                        { num: 58, text: "سَلَامٌ قَوْلًا مِّن رَّبٍّ رَّحِيمٍ" },
+                        { num: 59, text: "وَامْتَازُوا الْيَوْمَ أَيُّهَا الْمُجْرِمُونَ" },
+                        { num: 60, text: "أَلَمْ أَعْهَدْ إِلَيْكُمْ يَا بَنِي آدَمَ أَن لَّا تَعْبُدُوا الشَّيْطَانَ إِنَّهُ لَكُمْ عَدُوٌّ مُّبِينٌ" },
+                        { num: 61, text: "وَأَنِ اعْبُدُونِي هَٰذَا صِرَاطٌ مُّسْتَقِيمٌ" },
+                        { num: 62, text: "وَلَقَدْ أَضَلَّ مِنكُمْ جِبِلًّا كَثِيرًا أَفَلَمْ تَكُونُوا تَعْقِلُونَ" },
+                        { num: 63, text: "هَٰذِهِ جَهَنَّمُ الَّتِي كُنتُمْ تُوعَدُونَ" },
+                        { num: 64, text: "اصْلَوْهَا الْيَوْمَ بِمَا كُنتُمْ تَكْفُرُونَ" },
+                        { num: 65, text: "الْيَوْمَ نَخْتِمُ عَلَىٰ أَفْوَاهِهِمْ وَتُكَلِّمُنَا أَيْدِيهِمْ وَتَشْهَدُ أَرْجُلُهُم بِمَا كَانُوا يَكْسِبُونَ" },
+                        { num: 66, text: "وَلَوْ نَشَاءُ لَطَمَسْنَا عَلَىٰ أَعْيُنِهِمْ فَاسْتَبَقُوا الصِّرَاطَ فَأَنَّىٰ يُبْصِرُونَ" },
+                        { num: 67, text: "وَلَوْ نَشَاءُ لَمَسَخْنَاهُمْ عَلَىٰ مَكَانَتِهِمْ فَمَا اسْتَطَاعُوا مُضِيًّا وَلَا يَرْجِعُونَ" }
+                    ]
+                },
+                {
+                    id: 6, title: "المرحلة السادسة", info: "الآيات 68-83 | قدرة الله",
+                    verses: [
+                        { num: 68, text: "وَمَن نُّعَمِّرْهُ نُنَكِّسْهُ فِي الْخَلْقِ أَفَلَا يَعْقِلُونَ" },
+                        { num: 69, text: "وَمَا عَلَّمْنَاهُ الشِّعْرَ وَمَا يَنبَغِي لَهُ إِنْ هُوَ إِلَّا ذِكْرٌ وَقُرْآنٌ مُّبِينٌ" },
+                        { num: 70, text: "لِّيُنذِرَ مَن كَانَ حَيًّا وَيَحِقَّ الْقَوْلُ عَلَى الْكَافِرِينَ" },
+                        { num: 71, text: "أَوَلَمْ يَرَوْا أَنَّا خَلَقْنَا لَهُم مِّمَّا عَمِلَتْ أَيْدِينَا أَنْعَامًا فَهُمْ لَهَا مَالِكُونَ" },
+                        { num: 72, text: "وَذَلَّلْنَاهَا لَهُمْ فَمِنْهَا رَكُوبُهُمْ وَمِنْهَا يَأْكُلُونَ" },
+                        { num: 73, text: "وَلَهُمْ فِيهَا مَنَافِعُ وَمَشَارِبُ أَفَلَا يَشْكُرُونَ" },
+                        { num: 74, text: "وَاتَّخَذُوا مِن دُونِ اللَّهِ آلِهَةً لَّعَلَّهُمْ يُنصَرُونَ" },
+                        { num: 75, text: "لَا يَسْتَطِيعُونَ نَصْرَهُمْ وَهُمْ لَهُمْ جُندٌ مُّحْضَرُونَ" },
+                        { num: 76, text: "فَلَا يَحْزُنكَ قَوْلُهُمْ إِنَّا نَعْلَمُ مَا يُسِرُّونَ وَمَا يُعْلِنُونَ" },
+                        { num: 77, text: "أَوَلَمْ يَرَ الْإِنسَانُ أَنَّا خَلَقْنَاهُ مِن نُّطْفَةٍ فَإِذَا هُوَ خَصِيمٌ مُّبِينٌ" },
+                        { num: 78, text: "وَضَرَبَ لَنَا مَثَلًا وَنَسِيَ خَلْقَهُ قَالَ مَن يُحْيِي الْعِظَامَ وَهِيَ رَمِيمٌ" },
+                        { num: 79, text: "قُلْ يُحْيِيهَا الَّذِي أَنشَأَهَا أَوَّلَ مَرَّةٍ وَهُوَ بِكُلِّ خَلْقٍ عَلِيمٌ" },
+                        { num: 80, text: "الَّذِي جَعَلَ لَكُم مِّنَ الشَّجَرِ الْأَخْضَرِ نَارًا فَإِذَا أَنتُم مِّنْهُ تُوقِدُونَ" },
+                        { num: 81, text: "أَوَلَيْسَ الَّذِي خَلَقَ السَّمَاوَاتِ وَالْأَرْضَ بِقَادِرٍ عَلَىٰ أَن يَخْلُقَ مِثْلَهُم بَلَىٰ وَهُوَ الْخَلَّاقُ الْعَلِيمُ" },
+                        { num: 82, text: "إِنَّمَا أَمْرُهُ إِذَا أَرَادَ شَيْئًا أَن يَقُولَ لَهُ كُن فَيَكُونُ" },
+                        { num: 83, text: "فَسُبْحَانَ الَّذِي بِيَدِهِ مَلَكُوتُ كُلِّ شَيْءٍ وَإِلَيْهِ تُرْجَعُونَ" }
+                    ]
+                }
+            ]
+        };
+
+        // المتغيرات
+        let currentStage = 1;
+        let memorizedVerses = JSON.parse(localStorage.getItem('yasin_mem') || '{}');
+        let completedStages = JSON.parse(localStorage.getItem('yasin_comp') || '[]');
+        let darkMode = localStorage.getItem('yasin_dark') === 'true';
+        let hiddenWords = [];
+        let quizCorrect = 0;
+        let quizTotal = 0;
+        
+        // الصوت
+        let audioPlayer = document.getElementById('audioPlayer');
+        let isPlaying = false;
+        let currentAudioVerse = 1;
+        
+        // الاختبارات
+        let currentCompleteIdx = 0;
+        let currentArrangeVerse = null;
+        let arrangeAnswer = [];
+        let currentFillVerse = null;
+        let currentBlankWord = null;
+
+        // تهيئة
+        function init() {
+            if (darkMode) document.body.classList.add('dark-mode');
+            renderTabs();
+            renderContent();
+            updateStats();
+        }
+
+        // عرض التبويبات
+        function renderTabs() {
+            const container = document.getElementById('tabsContainer');
+            container.innerHTML = surahData.stages.map(stage => {
+                const isCompleted = completedStages.includes(stage.id);
+                const isActive = stage.id === currentStage;
+                return `<div class="tab ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" onclick="switchStage(${stage.id})">
+                    <div class="tab-title">${stage.title}</div>
+                    <div class="tab-info">آية ${stage.verses[0].num}-${stage.verses[stage.verses.length-1].num}</div>
+                    <div class="tab-status">${isCompleted ? '⭐' : '○'}</div>
+                </div>`;
+            }).join('');
+        }
+
+        // تغيير المرحلة
+        function switchStage(id) {
+            currentStage = id;
+            hiddenWords = [];
+            document.getElementById('quizSection').style.display = 'none';
+            stopAudio();
+            renderTabs();
+            renderContent();
+        }
+
+        // عرض الآيات
+        function renderContent() {
+            const stage = surahData.stages.find(s => s.id === currentStage);
+            document.getElementById('stageTitle').textContent = stage.title;
+            document.getElementById('stageInfo').textContent = stage.info;
+            
+            const container = document.getElementById('versesContainer');
+            container.innerHTML = stage.verses.map(verse => {
+                const isMemorized = memorizedVerses[verse.num];
+                const words = verse.text.split(' ');
+                const wordSpans = words.map((word, idx) => {
+                    const wordId = `${verse.num}-${idx}`;
+                    const isHidden = hiddenWords.includes(wordId);
+                    return `<span class="word ${isHidden ? 'hidden-word' : ''}">${word}</span>`;
+                }).join(' ');
+                
+                return `<span class="verse ${isMemorized ? 'memorized' : ''}" onclick="toggleVerse(${verse.num})">${wordSpans}</span><span class="verse-number">${verse.num}</span>`;
+            }).join(' ');
+            
+            currentAudioVerse = stage.verses[0].num;
+            document.getElementById('currentVersePlaying').textContent = `الآية ${currentAudioVerse}`;
+        }
+
+        // إخفاء كلمات عشوائية
+        function hideRandomWords() {
+            const stage = surahData.stages.find(s => s.id === currentStage);
+            hiddenWords = [];
+            
+            stage.verses.forEach(verse => {
+                const words = verse.text.split(' ');
+                if (words.length < 2) return;
+                const numToHide = Math.max(1, Math.floor(words.length * 0.4));
+                const indices = [];
+                while (indices.length < numToHide) {
+                    const idx = Math.floor(Math.random() * words.length);
+                    if (!indices.includes(idx)) {
+                        indices.push(idx);
+                        hiddenWords.push(`${verse.num}-${idx}`);
+                    }
+                }
+            });
+            renderContent();
+        }
+
+        // إخفاء الكلمات الأخيرة
+        function hideLastWords() {
+            const stage = surahData.stages.find(s => s.id === currentStage);
+            hiddenWords = [];
+            
+            stage.verses.forEach(verse => {
+                const words = verse.text.split(' ');
+                if (words.length < 2) return;
+                const numToHide = Math.max(1, Math.ceil(words.length / 2));
+                for (let i = words.length - numToHide; i < words.length; i++) {
+                    hiddenWords.push(`${verse.num}-${i}`);
+                }
+            });
+            renderContent();
+        }
+
+        // إخفاء آية كاملة
+        function hideFullVerse() {
+            const stage = surahData.stages.find(s => s.id === currentStage);
+            const randomVerse = stage.verses[Math.floor(Math.random() * stage.verses.length)];
+            const words = randomVerse.text.split(' ');
+            
+            hiddenWords = [];
+            words.forEach((_, idx) => {
+                hiddenWords.push(`${randomVerse.num}-${idx}`);
+            });
+            renderContent();
+            alert(`تم إخفاء الآية رقم ${randomVerse.num} - حاول تذكرها!`);
+        }
+
+        // إظهار الكل
+        function showAllWords() {
+            hiddenWords = [];
+            renderContent();
+        }
+
+        // تبديل حفظ الآية
+        function toggleVerse(num) {
+            memorizedVerses[num] = !memorizedVerses[num];
+            localStorage.setItem('yasin_mem', JSON.stringify(memorizedVerses));
+            renderContent();
+            updateStats();
+            checkStageCompletion();
+        }
+
+        // حفظ الكل
+        function markAllMemorized() {
+            const stage = surahData.stages.find(s => s.id === currentStage);
+            stage.verses.forEach(v => memorizedVerses[v.num] = true);
+            localStorage.setItem('yasin_mem', JSON.stringify(memorizedVerses));
+            renderContent();
+            updateStats();
+            checkStageCompletion();
+        }
+
+        // فحص اكتمال المرحلة
+        function checkStageCompletion() {
+            const stage = surahData.stages.find(s => s.id === currentStage);
+            const allMemorized = stage.verses.every(v => memorizedVerses[v.num]);
+            
+            if (allMemorized && !completedStages.includes(currentStage)) {
+                completedStages.push(currentStage);
+                localStorage.setItem('yasin_comp', JSON.stringify(completedStages));
+                renderTabs();
+                showModal();
+            }
+        }
+
+        // تحديث الإحصائيات
+        function updateStats() {
+            const memCount = Object.values(memorizedVerses).filter(Boolean).length;
+            document.getElementById('totalVerses').textContent = memCount;
+            document.getElementById('completedStages').textContent = completedStages.length;
+            document.getElementById('totalStars').textContent = completedStages.length * 3;
+            document.getElementById('quizScore').textContent = (quizTotal > 0 ? Math.round((quizCorrect / quizTotal) * 100) : 0) + '%';
+            
+            const percent = Math.round((memCount / 83) * 100);
+            document.getElementById('progressPercent').textContent = percent + '%';
+            document.getElementById('progressFill').style.width = percent + '%';
+        }
+
+        // الوضع الليلي
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('yasin_dark', darkMode);
+        }
+
+        // إعادة البدء
+        function resetProgress() {
+            if (confirm('هل أنت متأكد من إعادة البدء؟')) {
+                memorizedVerses = {};
+                completedStages = [];
+                quizCorrect = 0;
+                quizTotal = 0;
+                localStorage.removeItem('yasin_mem');
+                localStorage.removeItem('yasin_comp');
+                renderTabs();
+                renderContent();
+                updateStats();
+            }
+        }
+
+        // Modal
+        function showModal() {
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        // ===== الصوت =====
+        function getAudioUrl(verseNum) {
+            const paddedVerse = String(verseNum).padStart(3, '0');
+            return `https://everyayah.com/data/Yasser_Ad-Dussary_128kbps/036${paddedVerse}.mp3`;
+        }
+
+        function toggleAudio() {
+            if (isPlaying) {
+                audioPlayer.pause();
+                isPlaying = false;
+                document.getElementById('playBtn').textContent = '▶️';
+                document.getElementById('playBtn').classList.remove('playing');
+            } else {
+                playCurrentVerse();
+            }
+        }
+
+        function playCurrentVerse() {
+            const stage = surahData.stages.find(s => s.id === currentStage);
+            const verse = stage.verses.find(v => v.num === currentAudioVerse);
+            if (!verse) return;
+            
+            audioPlayer.src = getAudioUrl(verse.num);
+            audioPlayer.play().catch(e => {
+                alert('تعذر تشغيل الصوت. تأكد من اتصالك بالإنترنت.');
+            });
+            isPlaying = true;
+            document.getElementById('playBtn').textContent = '⏸️';
+            document.getElementById('playBtn').classList.add('playing');
+            document.getElementById('currentVersePlaying').textContent = `▶️ الآية ${verse.num}: ${verse.text.substring(0, 35)}...`;
+        }
+
+        function stopAudio() {
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+            isPlaying = false;
+            document.getElementById('playBtn').textContent = '▶️';
+            document.getElementById('playBtn').classList.remove('playing');
+        }
+
+        function nextVerseAudio() {
+            const stage = surahData.stages.find(s => s.id === currentStage);
+            const idx = stage.verses.findIndex(v => v.num === currentAudioVerse);
+            if (idx < stage.verses.length - 1) {
+                currentAudioVerse = stage.verses[idx + 1].num;
+                document.getElementById('currentVersePlaying').textContent = `الآية ${currentAudioVerse}`;
+                if (isPlaying) playCurrentVerse();
+            }
+        }
+
+        function prevVerseAudio() {
+            const stage = surahData.stages.find(s => s.id === currentStage);
+            const idx = stage.verses.findIndex(v => v.num === currentAudioVerse);
+            if (idx > 0) {
+                currentAudioVerse = stage.verses[idx - 1].num;
+                document.getElementById('currentVersePlaying').textContent = `الآية ${currentAudioVerse}`;
+                if (isPlaying) playCurrentVerse();
+            }
+        }
+
+        function repeatVerse() {
+            audioPlayer.currentTime = 0;
+            if (!isPlaying) playCurrentVerse();
+        }
+
+        audioPlayer.onended = function() {
+            nextVerseAudio();
+            if (isPlaying) setTimeout(playCurrentVerse, 300);
+        };
+
+        // ===== الاختبارات =====
+        function toggleQuizSection() {
+            const section = document.getElementById('quizSection');
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                currentCompleteIdx = 0;
+                generateCompleteQ();
+            } else {
+                section.style.display = 'none';
+            }
+        }
+
+        function switchQuiz(type) {
+            document.querySelectorAll('.quiz-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.quiz-content').forEach(c => c.classList.remove('active'));
+            
+            if (type === 'complete') {
+                document.getElementById('tabComplete').classList.add('active');
+                document.getElementById('quizComplete').classList.add('active');
+                generateCompleteQ();
+            } else if (type === 'arrange') {
+                document.getElementById('tabArrange').classList.add('active');
+                document.getElementById('quizArrange').classList.add('active');
+                generateArrangeQ();
+            } else if (type === 'fill') {
+                document.getElementById('tabFill').classList.add('active');
+                document.getElementById('quizFill').classList.add('active');
+                generateFillQ();
+            }
+        }
+
+        // اختبار أكمل الآية
+        function generateCompleteQ() {
+            const stage = surahData.stages.find(s => s.id === currentStage);
+            const verses = stage.verses;
+            
+            if (currentCompleteIdx >= verses.length - 1) {
+                document.getElementById('completeQuestion').textContent = '🎉 أحسنت! أتممت جميع الأسئلة';
+                document.getElementById('completeOptions').innerHTML = '';
+                document.getElementById('completeResult').innerHTML = '';
+                return;
+            }
+            
+            const verse = verses[currentCompleteIdx];
+            const nextVerse = verses[currentCompleteIdx + 1];
+            
+            const allVerses = surahData.stages.flatMap(s => s.verses);
+            let wrongOptions = allVerses
+                .filter(v => v.num !== nextVerse.num && v.text.length > 10)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3)
+                .map(v => v.text);
+            
+            const options = [...wrongOptions, nextVerse.text].sort(() => Math.random() - 0.5);
+            
+            document.getElementById('completeQuestion').innerHTML = `"${verse.text}"`;
+            document.getElementById('completeOptions').innerHTML = options.map((opt, i) => 
+                `<div class="quiz-option" onclick="checkCompleteA(this, ${opt === nextVerse.text})">${opt}</div>`
+            ).join('');
+            document.getElementById('completeResult').innerHTML = '';
+        }
+
+        function checkCompleteA(el, isCorrect) {
+            document.querySelectorAll('#completeOptions .quiz-option').forEach(o => o.classList.add('disabled'));
+            quizTotal++;
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                quizCorrect++;
+                document.getElementById('completeResult').innerHTML = '<div class="result-msg success">✅ إجابة صحيحة! أحسنت</div>';
+            } else {
+                el.classList.add('wrong');
+                const stage = surahData.stages.find(s => s.id === currentStage);
+                const nextVerse = stage.verses[currentCompleteIdx + 1];
+                document.querySelectorAll('#completeOptions .quiz-option').forEach(o => {
+                    if (o.textContent === nextVerse.text) o.classList.add('correct');
+                });
+                document.getElementById('completeResult').innerHTML = '<div class="result-msg error">❌ إجابة خاطئة</div>';
+            }
+            updateStats();
+        }
+
+        function nextCompleteQ() {
+            currentCompleteIdx++;
+            generateCompleteQ();
+        }
+
+        // اختبار ترتيب الكلمات
+        function generateArrangeQ() {
+            const stage = surahData.stages.find(s => s.id === currentStage);
+            const verses = stage.verses.filter(v => v.text.split(' ').length >= 4);
+            
+            if (verses.length === 0) {
+                document.getElementById('wordBank').innerHTML = '<span>لا توجد آيات مناسبة</span>';
+                return;
+            }
+            
+            currentArrangeVerse = verses[Math.floor(Math.random() * verses.length)];
+            const words = currentArrangeVerse.text.split(' ');
+            const shuffled = [...words].sort(() => Math.random() - 0.5);
+            arrangeAnswer = [];
+            
+            document.getElementById('answerZone').innerHTML = '<span style="color: #999;">اضغط على الكلمات بالترتيب الصحيح</span>';
+            document.getElementById('wordBank').innerHTML = shuffled.map((word, i) => 
+                `<div class="word-chip" onclick="selectWordA(this, '${word}', ${i})" data-idx="${i}">${word}</div>`
+            ).join('');
+            document.getElementById('arrangeResult').innerHTML = '';
+        }
+
+        function selectWordA(el, word, idx) {
+            if (el.classList.contains('selected')) {
+                el.classList.remove('selected');
+                arrangeAnswer = arrangeAnswer.filter(w => w.idx !== idx);
+            } else {
+                el.classList.add('selected');
+                arrangeAnswer.push({ word, idx });
+            }
+            
+            if (arrangeAnswer.length > 0) {
+                document.getElementById('answerZone').innerHTML = arrangeAnswer.map(w => 
+                    `<div class="word-chip in-answer">${w.word}</div>`
+                ).join('');
+            } else {
+                document.getElementById('answerZone').innerHTML = '<span style="color: #999;">اضغط على الكلمات بالترتيب الصحيح</span>';
+            }
+        }
+
+        function checkArrange() {
+            if (!currentArrangeVerse) return;
+            
+            const correct = currentArrangeVerse.text.split(' ');
+            const user = arrangeAnswer.map(w => w.word);
+            quizTotal++;
+            
+            if (JSON.stringify(correct) === JSON.stringify(user)) {
+                quizCorrect++;
+                document.getElementById('arrangeResult').innerHTML = '<div class="result-msg success">✅ ترتيب صحيح! ممتاز</div>';
+            } else {
+                document.getElementById('arrangeResult').innerHTML = `<div class="result-msg error">❌ الترتيب الصحيح:<br>${currentArrangeVerse.text}</div>`;
+            }
+            updateStats();
+        }
+
+        function nextArrangeQ() {
+            generateArrangeQ();
+        }
+
+        // اختبار الكلمة الناقصة
+        function generateFillQ() {
+            const stage = surahData.stages.find(s => s.id === currentStage);
+            const verses = stage.verses.filter(v => v.text.split(' ').length >= 3);
+            
+            if (verses.length === 0) return;
+            
+            currentFillVerse = verses[Math.floor(Math.random() * verses.length)];
+            const words = currentFillVerse.text.split(' ');
+            const blankIdx = Math.floor(Math.random() * words.length);
+            currentBlankWord = words[blankIdx];
+            
+            const displayWords = words.map((w, i) => 
+                i === blankIdx ? '<span class="blank-word">___</span>' : w
+            );
+            document.getElementById('fillDisplay').innerHTML = displayWords.join(' ');
+            
+            const allWords = [...new Set(surahData.stages.flatMap(s => 
+                s.verses.flatMap(v => v.text.split(' '))
+            ))].filter(w => w !== currentBlankWord && w.length > 2);
+            
+            const wrongOptions = allWords.sort(() => Math.random() - 0.5).slice(0, 3);
+            const options = [...wrongOptions, currentBlankWord].sort(() => Math.random() - 0.5);
+            
+            document.getElementById('fillOptions').innerHTML = options.map(opt => 
+                `<div class="quiz-option" onclick="checkFillA(this, '${opt}')">${opt}</div>`
+            ).join('');
+            document.getElementById('fillResult').innerHTML = '';
+        }
+
+        function checkFillA(el, word) {
+            document.querySelectorAll('#fillOptions .quiz-option').forEach(o => o.classList.add('disabled'));
+            quizTotal++;
+            
+            if (word === currentBlankWord) {
+                el.classList.add('correct');
+                quizCorrect++;
+                document.querySelector('.blank-word').textContent = currentBlankWord;
+                document.querySelector('.blank-word').style.color = 'var(--success)';
+                document.getElementById('fillResult').innerHTML = '<div class="result-msg success">✅ إجابة صحيحة!</div>';
+            } else {
+                el.classList.add('wrong');
+                document.querySelector('.blank-word').textContent = currentBlankWord;
+                document.querySelector('.blank-word').style.color = 'var(--error)';
+                document.querySelectorAll('#fillOptions .quiz-option').forEach(o => {
+                    if (o.textContent === currentBlankWord) o.classList.add('correct');
+                });
+                document.getElementById('fillResult').innerHTML = '<div class="result-msg error">❌ إجابة خاطئة</div>';
+            }
+            updateStats();
+        }
+
+        function nextFillQ() {
+            generateFillQ();
+        }
+
+        // تشغيل
+        init();
+    </script>
+</body>
+</html>
